@@ -1,6 +1,8 @@
-import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import logo from "../../../../assets/logo.svg";
+
+// Icons
+import { Menu, X } from "lucide-react";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
