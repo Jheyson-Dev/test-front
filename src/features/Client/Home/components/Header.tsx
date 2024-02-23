@@ -3,6 +3,7 @@ import logo from "../../../../assets/logo.svg";
 
 // Icons
 import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -28,9 +29,9 @@ export const Header = () => {
               </div>
               <nav className=" flex flex-col gap-8 items-center justify-center h-full text-negro font-prosto-one text-2xl">
                 <div className="w-full text-center">
-                  <a href="#" className="mb-2">
+                  <Link to={"/"} className="mb-2">
                     Buscador
-                  </a>
+                  </Link>
                 </div>
                 <div className="w-full text-center">
                   <a href="#" className="mb-2">

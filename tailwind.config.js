@@ -46,6 +46,7 @@ module.exports = {
         "admin-gray": "#13131360",
         "admin-black": "#000000",
         "admin-blue": "#0B63F8",
+        "verde-whatsapp": "#25D366",
       },
       fontFamily: {
         poppins: ['"Poppins"', "sans-serif"],

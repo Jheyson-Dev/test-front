@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 // Icons
 import { Search } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
   // Estados
@@ -83,12 +84,13 @@ export const Home = () => {
             {/* Grilla de productos */}
             <div className="grid gap-2 grid-cols-2 font-prosto-one text-azul py-16">
               {[1, 2, 3, 4].map((item, index) => (
-                <div
+                <Link
+                  to={`/product/${index}`}
+                  key={index}
                   className={`w-44 flex flex-col items-center gap-2 py-4 px-2 rounded-lg shadow-lg border-[1px] border-border-gray ${
                     tabs.ofertas ? "bg-red-500" : ""
                   }
                   ${tabs.ingresos ? "bg-amarillo" : "bg-blanco"}`}
-                  key={index}
                 >
                   <p className="text-base text-center leading-none">
                     Nombrecito Producto
@@ -104,7 +106,7 @@ export const Home = () => {
                   >
                     Ver producto
                   </Button>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
