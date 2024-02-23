@@ -29,9 +29,11 @@ export const Home = () => {
       <div className="py-10 px-4 flex flex-col gap-4">
         {/* Logo e Input Search */}
         <div className="flex flex-col gap-10 items-center">
+          {/* Logo */}
           <div>
             <img src={logo} alt="Deybipart Logo" className="w-64" />
           </div>
+          {/* Input Search */}
           <div className="flex w-full items-center">
             <Input
               type="email"

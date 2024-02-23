@@ -1,17 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "../../../../assets/logo.svg";
 
 // Icons
 import { Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const changeNav = () => {
     setIsOpen(!isOpen);
   };
+
+  // Cilco de vida del componente
+  useEffect(() => {
+    // Bloquear el scroll
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      // Habilitar el scroll
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
   return (
-    <header className="bg-blanco shadow-lg">
+    <header className="bg-blanco shadow-l">
       <div className="flex justify-between items-center p-4">
         <div>
           <img src={logo} alt="DeybiPart Logo" className="w-24" />
@@ -29,24 +43,44 @@ export const Header = () => {
               </div>
               <nav className=" flex flex-col gap-8 items-center justify-center h-full text-negro font-prosto-one text-2xl">
                 <div className="w-full text-center">
-                  <Link to={"/"} className="mb-2">
+                  <NavLink
+                    to={"/"}
+                    className={({ isActive }) =>
+                      isActive ? "underline" : "mb-2"
+                    }
+                  >
                     Buscador
-                  </Link>
+                  </NavLink>
                 </div>
                 <div className="w-full text-center">
-                  <a href="#" className="mb-2">
+                  <NavLink
+                    to={"/search-code"}
+                    className={({ isActive }) =>
+                      isActive ? "underline" : "mb-2"
+                    }
+                  >
                     Codigo Referencia
-                  </a>
+                  </NavLink>
                 </div>
                 <div className="w-full text-center">
-                  <a href="#" className="mb-2">
+                  <NavLink
+                    to={"/search-modelo"}
+                    className={({ isActive }) =>
+                      isActive ? "underline" : "mb-2"
+                    }
+                  >
                     Modelo
-                  </a>
+                  </NavLink>
                 </div>
                 <div className="w-full text-center">
-                  <a href="#" className="mb-2">
+                  <NavLink
+                    to={"/search-medida"}
+                    className={({ isActive }) =>
+                      isActive ? "underline" : "mb-2"
+                    }
+                  >
                     Medida
-                  </a>
+                  </NavLink>
                 </div>
               </nav>
             </div>

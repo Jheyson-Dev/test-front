@@ -170,18 +170,10 @@ export const Product = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="bg-azul text-blanco text-center border-r-2 border-blanco">
-                    Codigo
-                  </TableHead>
-                  <TableHead className="bg-azul text-blanco text-center border-r-2 border-blanco">
-                    Precio
-                  </TableHead>
-                  <TableHead className="bg-azul text-blanco text-center border-r-2 border-blanco">
-                    Marca
-                  </TableHead>
-                  <TableHead className="bg-azul text-blanco text-center">
-                    Variacion
-                  </TableHead>
+                  <TableHead>Codigo</TableHead>
+                  <TableHead>Precio</TableHead>
+                  <TableHead>Marca</TableHead>
+                  <TableHead>Variacion</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -209,15 +201,9 @@ export const Product = () => {
             <Table>
               <TableBody>
                 <TableRow>
-                  <TableHead className="bg-azul text-blanco text-center border-r-2 border-blanco">
-                    Marca
-                  </TableHead>
-                  <TableHead className="bg-azul text-blanco text-center border-r-2 border-blanco">
-                    Modelo
-                  </TableHead>
-                  <TableHead className="bg-azul text-blanco text-center">
-                    Año
-                  </TableHead>
+                  <TableHead>Marca</TableHead>
+                  <TableHead>Modelo</TableHead>
+                  <TableHead>Año</TableHead>
                 </TableRow>
               </TableBody>
               <TableBody>
