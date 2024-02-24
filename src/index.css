@@ -6,5 +6,7 @@
 @tailwind utilities;
 
 @layer base {
-  
+  :root {
+    @apply scroll-smooth;
+  }
 }

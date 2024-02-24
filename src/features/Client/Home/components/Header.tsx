@@ -3,7 +3,7 @@ import logo from "../../../../assets/logo.svg";
 
 // Icons
 import { Menu, X } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -25,11 +25,11 @@ export const Header = () => {
   }, [isOpen]);
 
   return (
-    <header className="bg-blanco shadow-l">
+    <header className="bg-blanco shadow-l lg:hidden">
       <div className="flex justify-between items-center p-4">
-        <div>
+        <Link to={"/"}>
           <img src={logo} alt="DeybiPart Logo" className="w-24" />
-        </div>
+        </Link>
         <div>
           <button onClick={changeNav}>
             <Menu color="#093981" size={36} strokeWidth={3} />
@@ -64,7 +64,7 @@ export const Header = () => {
                 </div>
                 <div className="w-full text-center">
                   <NavLink
-                    to={"/search-modelo"}
+                    to={"/search-model"}
                     className={({ isActive }) =>
                       isActive ? "underline" : "mb-2"
                     }
@@ -72,16 +72,16 @@ export const Header = () => {
                     Modelo
                   </NavLink>
                 </div>
-                <div className="w-full text-center">
+                {/* <div className="w-full text-center">
                   <NavLink
-                    to={"/search-medida"}
+                    to={"/search-measure"}
                     className={({ isActive }) =>
                       isActive ? "underline" : "mb-2"
                     }
                   >
                     Medida
                   </NavLink>
-                </div>
+                </div> */}
               </nav>
             </div>
           )}
