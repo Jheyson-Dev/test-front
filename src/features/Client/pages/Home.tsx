@@ -1,7 +1,7 @@
 import { Header } from "../components/Header";
 // Imagenes
-import logo from "../../../../assets/logo.svg";
-import producto from "../../../../assets/product.png";
+import logo from "../../../assets/logo.svg";
+import producto from "../../../assets/product.png";
 
 // Shadcn
 import { Button } from "@/components/ui/button";

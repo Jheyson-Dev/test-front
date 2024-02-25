@@ -1,9 +1,9 @@
-import { Home } from "@/features/Client/Home/pages/Home";
-import { Product } from "@/features/Client/Home/pages/Product";
-import { SearchCode } from "@/features/Client/Home/pages/SearchCode";
-import { SearchModel } from "@/features/Client/Home/pages/SearchModel";
-import { SearchModelProducts } from "@/features/Client/Home/pages/SearchModelProducts";
-import { SelectModel } from "@/features/Client/Home/views/SelectModel";
+import { Home } from "@/features/Client/pages/Home";
+import { Product } from "@/features/Client/pages/Product";
+import { SearchCode } from "@/features/Client/pages/SearchCode";
+import { SearchModel } from "@/features/Client/pages/SearchModel";
+import { SearchModelProducts } from "@/features/Client/pages/SearchModelProducts";
+import { SelectModel } from "@/features/Client/views/SelectModel";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([

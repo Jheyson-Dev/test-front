@@ -1,7 +1,7 @@
 import { Header } from "../components/Header";
 
 // Imagenes
-import producto from "../../../../assets/product.png";
+import producto from "../../../assets/product.png";
 import { Button } from "@/components/ui/button";
 
 // Shadsn

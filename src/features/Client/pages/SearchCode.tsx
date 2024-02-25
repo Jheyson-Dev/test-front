@@ -2,7 +2,7 @@
 import { Header } from "../components/Header";
 
 // Imagenes
-import logo from "../../../../assets/logo.svg";
+import logo from "../../../assets/logo.svg";
 
 // Shadcn
 import { Input } from "@/components/ui/input";

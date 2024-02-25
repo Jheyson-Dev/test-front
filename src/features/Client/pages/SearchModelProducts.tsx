@@ -1,6 +1,6 @@
 import { useState } from "react";
 // Imagenes
-import logo from "../../../../assets/logo.svg";
+import logo from "../../../assets/logo.svg";
 
 // Components
 import { Header } from "../components/Header";
