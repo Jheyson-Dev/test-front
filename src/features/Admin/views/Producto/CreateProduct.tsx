@@ -118,7 +118,7 @@ export const CreateProduct = () => {
               <Controller
                 name="codigo_interno"
                 control={control}
-                rules={{ required: "Este campo es requerido" }}
+                // rules={{ required: "Este campo es requerido" }}
                 render={({ field }) => (
                   <Label className="w-1/3">
                     Código Interno
@@ -129,11 +129,11 @@ export const CreateProduct = () => {
                       disabled
                       placeholder="Ingrese el código interno"
                     />
-                    {errors.codigo_interno && (
+                    {/* {errors.codigo_interno && (
                       <div className="text-red-500 text-xs">
                         {errors.codigo_interno.message}
                       </div>
-                    )}
+                    )} */}
                   </Label>
                 )}
               />
