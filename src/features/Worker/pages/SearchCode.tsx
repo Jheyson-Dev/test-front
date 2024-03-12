@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 
 // Icons
 import { Search } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -22,6 +22,10 @@ import {
 import { Link } from "react-router-dom";
 import { HeaderDesktop } from "../components/HeaderDesktop";
 import { TopButton } from "../components/TopButton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useCodeProduct } from "@/features/Client/hooks/useCodeProduct";
+import { useCart } from "../contexts/cartContext";
+import { InputContext } from "../contexts/InputHomeContext";
 
 // Interfaces
 interface ProducSearch {
@@ -41,37 +45,17 @@ interface ProducSearch {
 
 export const SearchCode = () => {
   // Estados del componente
-  const [busqueda, setBusqueda] = useState(false);
-  const [vistaLista, setVistaLista] = useState(true);
 
-  // Funciones para manejar eventos
-  const handleClick = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") setBusqueda(!busqueda);
-  };
+  const { inputValue, setInputValue } = useContext(InputContext);
 
-  // Funciones para modificar el estado
-  const changeView = () => {
-    setVistaLista(!vistaLista);
-  };
+  const { addItemToCart } = useCart();
 
-  //   Inicializacion de datos
-  const product: Array<ProducSearch> = [
-    {
-      marca: "Toyota",
-      modelo: "Corolla",
-      anioI: "2019",
-      anioT: "2021",
-      producto: "Bumper",
-      descripcion: "Bumper delantero",
-      origen: "Taiwan",
-      marcap: "STP",
-      codigo: "123456",
-      precio: 100,
-      stock: 10,
-      imagen:
-        "https://preview.redd.it/nino-nakano-the-quintessential-quintuplets-v0-up5rth2tldlb1.jpg?width=1300&format=pjpg&auto=webp&s=83fa898f70e0d6f765249ff3d1d1b282b2715100",
-    },
-  ];
+  const { data } = useCodeProduct(inputValue);
+  console.log(data);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -94,7 +78,10 @@ export const SearchCode = () => {
                 type="text"
                 placeholder="Ingrese el código de referencia"
                 className="placeholder:font-prosto-one placeholder:text-base border-2 border-r-0 rounded-r-none border-border-gray focus-visible:ring-0 focus-visible:ring-offset-0"
-                onKeyDown={(e) => handleClick(e)}
+                defaultValue={inputValue}
+                onChange={(e) => {
+                  setInputValue(e.target.value);
+                }}
               />
               <Button
                 type="submit"
@@ -111,100 +98,107 @@ export const SearchCode = () => {
           </div>
 
           {/* Resultados y Cambio de Vista */}
-          <div className="flex justify-between items-center">
-            <p>200 resultados</p>
-            {/* Boton cambio de vista */}
-            <div className="flex border-2 border-azul rounded-lg">
-              <div
-                className={`${
-                  vistaLista ? "bg-azul text-blanco" : ""
-                } px-2 cursor-pointer`}
-                onClick={changeView}
-              >
-                Lista
+
+          <Tabs defaultValue="lista">
+            <TabsList className="flex justify-between items-center">
+              <p className="font-semibold">
+                Se encontraron {data?.length ?? "0"} resultados
+              </p>
+              <div>
+                <TabsTrigger value="lista">Lista</TabsTrigger>
+                <TabsTrigger value="imagenes">Imagenes</TabsTrigger>
               </div>
-              <div
-                className={`${
-                  vistaLista ? "" : "bg-azul text-blanco"
-                } px-2 cursor-pointer`}
-                onClick={changeView}
-              >
-                Imagenes
-              </div>
-            </div>
-          </div>
-          {/* Vistas Lista o Imagenes  */}
-          {vistaLista ? (
-            <Table className="">
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Marca</TableHead>
-                  <TableHead>Modelo</TableHead>
-                  <TableHead>Año Inicio</TableHead>
-                  <TableHead>Año Termino</TableHead>
-                  <TableHead>Producto</TableHead>
-                  <TableHead>Descripción</TableHead>
-                  <TableHead>Origen</TableHead>
-                  <TableHead>Marca</TableHead>
-                  <TableHead>Código</TableHead>
-                  <TableHead>Precio</TableHead>
-                  <TableHead>Stock</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {product.map((item, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{item.marca}</TableCell>
-                    <TableCell>{item.modelo}</TableCell>
-                    <TableCell>{item.anioI}</TableCell>
-                    <TableCell>{item.anioT}</TableCell>
-                    <TableCell>{item.producto}</TableCell>
-                    <TableCell>{item.descripcion}</TableCell>
-                    <TableCell>{item.origen}</TableCell>
-                    <TableCell>{item.marcap}</TableCell>
-                    <TableCell>
-                      <Link
-                        to={`/worker/product/${item.codigo}`}
-                        className="underline text-amarillo"
-                      >
-                        {item.codigo}
-                      </Link>
-                    </TableCell>
-                    <TableCell>{item.precio}</TableCell>
-                    <TableCell>{item.stock}</TableCell>
+            </TabsList>
+            <TabsContent value="lista" className="">
+              <Table className="">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Marca</TableHead>
+                    <TableHead>Modelo</TableHead>
+                    <TableHead>Año I-T</TableHead>
+                    <TableHead>Producto</TableHead>
+                    <TableHead>Descripción</TableHead>
+                    <TableHead>Origen</TableHead>
+                    <TableHead>Marca</TableHead>
+                    <TableHead>Código Interno</TableHead>
+                    <TableHead>Precio</TableHead>
+                    <TableHead>Stock</TableHead>
                   </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {data?.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{item.nombre_marca}</TableCell>
+                      <TableCell>{item.nombre_modelo}</TableCell>
+                      <TableCell>
+                        <span className="flex justify-center w-10 overflow-hidden overflow-ellipsis">
+                          {item.anio_inicio_termino}
+                        </span>
+                      </TableCell>
+                      <TableCell>{item.nombre_producto}</TableCell>
+                      <TableCell>{item.descripcion}</TableCell>
+                      <TableCell>{item.origen}</TableCell>
+                      <TableCell>{item.marca_fabricante}</TableCell>
+                      <TableCell>
+                        <Link
+                          to={`/worker/product/${item.id_producto}`}
+                          className="underline text-amarillo"
+                        >
+                          {item.codigo_interno}
+                        </Link>
+                      </TableCell>
+                      <TableCell>{item.precio_venta}</TableCell>
+                      <TableCell>{item.total_stock}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TabsContent>
+            <TabsContent value="imagenes" className="">
+              <div className="font-prosto-one flex flex-wrap gap-2 md:gap-4 justify-start text-azul py-4">
+                {data?.map((item, index) => (
+                  <div
+                    className="w-40 lg:w-52 flex flex-col gap-4 py-4 px-2 rounded-lg shadow-lg border-[2px] border-border-gray hover:border-negro"
+                    key={index}
+                  >
+                    <Link
+                      to={`/worker/product/${item.id_producto}`}
+                      className="flex flex-col gap-2 items-center"
+                    >
+                      <p className="text-base text-center leading-none">
+                        {item.nombre_producto}
+                      </p>
+                      <p className="text-sm">{item.marca_fabricante}</p>
+                      <div>
+                        <img
+                          src={
+                            item?.imagenes[0]?.img_url
+                              ? item?.imagenes[0]?.img_url
+                              : "https://th.bing.com/th/id/R.ed641760a1851c7f97c90d3ba5fa905e?rik=%2fo%2bpK9MvGSZdMQ&pid=ImgRaw&r=0"
+                          }
+                          alt="Imagen de un producto"
+                          className="object-cover rounded-lg h-40"
+                        />
+                      </div>
+                      <p>S/. {item.precio_venta}</p>
+                    </Link>
+                    <Button
+                      className=" bg-azul text-blanco font-prosto-one  border-2 border-azul w-full hover:bg-azul"
+                      onClick={() => {
+                        const newItem = {
+                          ...item,
+                          imagenes: [item.url_imagen_producto],
+                        };
+                        addItemToCart(newItem);
+                      }}
+                    >
+                      Anadir al carrito
+                    </Button>
+                  </div>
                 ))}
-              </TableBody>
-            </Table>
-          ) : (
-            <div className="font-prosto-one text-azul">
-              <Link
-                to={`/worker/product/2`}
-                className={`w-44 lg:w-52 flex flex-col items-center gap-2 py-4 px-2 rounded-lg shadow-lg border-[1px] border-border-gray 
-                  `}
-              >
-                <p className="text-base text-center leading-none">
-                  Nombrecito Producto
-                </p>
-                <p className="text-sm">Marca</p>
-                <div>
-                  <img
-                    src={
-                      "https://preview.redd.it/nino-nakano-the-quintessential-quintuplets-v0-up5rth2tldlb1.jpg?width=1300&format=pjpg&auto=webp&s=83fa898f70e0d6f765249ff3d1d1b282b2715100"
-                    }
-                    alt="Imagen de un producto"
-                  />
-                </div>
-                <p>S/. 100.00</p>
-                <Button
-                  className="bg-azul text-blanco font-prosto-one  border-2 border-azul w-full hover:bg-azul"
-                  // onClick={() => alert("Añadir al carrito")}
-                >
-                  Ver producto
-                </Button>
-              </Link>
-            </div>
-          )}
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
         <TopButton />
       </div>

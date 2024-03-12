@@ -1,3 +1,4 @@
+import { ArrowUpCircleIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export const TopButton = () => {
@@ -26,10 +27,10 @@ export const TopButton = () => {
     <>
       {view && (
         <div
-          className="fixed right-10 bottom-10 w-24 h-24 rounded-full flex items-center justify-center text-white   text-2xl font-semibold font-prosto-one cursor-pointer bg-red-500"
+          className="fixed right-10 bottom-10  px-2 justify-center items-center animate-bounce"
           onClick={() => window.scrollTo(0, 0)}
         >
-          Subir
+          <ArrowUpCircleIcon size={48} strokeWidth={2} />
         </div>
       )}
     </>

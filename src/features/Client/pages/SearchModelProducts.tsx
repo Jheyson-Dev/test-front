@@ -14,9 +14,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Link, useParams } from "react-router-dom";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { HeaderDesktop } from "../components/HeaderDesktop";
+import { useModeloAutoId } from "@/features/Admin/hooks/ModeloAuto/useModeloAutoId";
 
 // Interfaces
 interface ProducSearch {
@@ -36,34 +39,11 @@ interface ProducSearch {
 
 export const SearchModelProducts = () => {
   const { id } = useParams();
-  // Estados del componente
-  const [vistaLista, setVistaLista] = useState(true);
 
-  // Funciones para modificar el estado
-  const changeView = () => {
-    setVistaLista(!vistaLista);
-  };
+  const { data } = useModeloAutoId(id);
 
-  //  Data Inicial
-  const product: Array<ProducSearch> = [
-    {
-      marca: "Toyota",
-      modelo: "Corolla",
-      anioI: "2019",
-      anioT: "2021",
-      producto: "Bumper",
-      descripcion: "Bumper delantero",
-      origen: "Taiwan",
-      marcap: "STP",
-      codigo: "123456",
-      precio: 100,
-      stock: 10,
-      imagen:
-        "https://preview.redd.it/nino-nakano-the-quintessential-quintuplets-v0-up5rth2tldlb1.jpg?width=1300&format=pjpg&auto=webp&s=83fa898f70e0d6f765249ff3d1d1b282b2715100",
-    },
-  ];
+  const navigate = useNavigate();
 
-  // className=""
   return (
     <div>
       <Header />
@@ -78,98 +58,101 @@ export const SearchModelProducts = () => {
             </div>
           </div>
           <div className="py-10 px-4 flex flex-col gap-4">
-            {/* Resultados y Cambio de Vista */}
-            <div className="flex justify-between items-center">
-              <p>200 resultado {id}</p>
-              {/* Boton cambio de vista */}
-              <div className="flex border-2 border-azul rounded-lg">
-                <div
-                  className={`${vistaLista ? "bg-azul text-blanco" : ""} px-2`}
-                  onClick={changeView}
-                >
-                  Lista
+            <Tabs defaultValue="lista">
+              <TabsList className="flex justify-between items-center">
+                <p className="font-semibold">
+                  Se encontraron {data?.productos?.length ?? "0"} resultados
+                </p>
+                <div>
+                  <TabsTrigger value="lista">Lista</TabsTrigger>
+                  <TabsTrigger value="imagenes">Imagenes</TabsTrigger>
                 </div>
-                <div
-                  className={`${vistaLista ? "" : "bg-azul text-blanco"} px-2`}
-                  onClick={changeView}
-                >
-                  Imagenes
-                </div>
-              </div>
-            </div>
-
-            {/* Vistas Lista o Imagenes  */}
-            {vistaLista ? (
-              <Table className="">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Marca</TableHead>
-                    <TableHead>Modelo</TableHead>
-                    <TableHead>Año Inicio</TableHead>
-                    <TableHead>Año Termino</TableHead>
-                    <TableHead>Producto</TableHead>
-                    <TableHead>Descripción</TableHead>
-                    <TableHead>Origen</TableHead>
-                    <TableHead>Marca</TableHead>
-                    <TableHead>Código</TableHead>
-                    <TableHead>Precio</TableHead>
-                    <TableHead>Stock</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {product.map((item, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{item.marca}</TableCell>
-                      <TableCell>{item.modelo}</TableCell>
-                      <TableCell>{item.anioI}</TableCell>
-                      <TableCell>{item.anioT}</TableCell>
-                      <TableCell>{item.producto}</TableCell>
-                      <TableCell>{item.descripcion}</TableCell>
-                      <TableCell>{item.origen}</TableCell>
-                      <TableCell>{item.marcap}</TableCell>
-                      <TableCell>
-                        <Link
-                          to={`/product/${item.codigo}`}
-                          className="underline text-amarillo"
-                        >
-                          {item.codigo}
-                        </Link>
-                      </TableCell>
-                      <TableCell>{item.precio}</TableCell>
-                      <TableCell>{item.stock}</TableCell>
+              </TabsList>
+              <TabsContent value="lista" className="">
+                <Table className="">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Marca</TableHead>
+                      <TableHead>Modelo</TableHead>
+                      <TableHead>Año I - T</TableHead>
+                      <TableHead>Producto</TableHead>
+                      <TableHead>Descripción</TableHead>
+                      <TableHead>Origen</TableHead>
+                      <TableHead>Marca</TableHead>
+                      <TableHead>Código Interno</TableHead>
+                      <TableHead>Precio</TableHead>
+                      <TableHead>Stock</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            ) : (
-              <div className="font-prosto-one text-azul">
-                <Link
-                  to={`/product/2`}
-                  className={`w-44 flex flex-col items-center gap-2 py-4 px-2 rounded-lg shadow-lg border-[1px] border-border-gray 
-                  `}
-                >
-                  <p className="text-base text-center leading-none">
-                    Nombrecito Producto
-                  </p>
-                  <p className="text-sm">Marca</p>
-                  <div>
-                    <img
-                      src={
-                        "https://preview.redd.it/nino-nakano-the-quintessential-quintuplets-v0-up5rth2tldlb1.jpg?width=1300&format=pjpg&auto=webp&s=83fa898f70e0d6f765249ff3d1d1b282b2715100"
-                      }
-                      alt="Imagen de un producto"
-                    />
-                  </div>
-                  <p>S/. 100.00</p>
-                  <Button
-                    className="bg-azul text-blanco font-prosto-one  border-2 border-azul w-full hover:bg-azul"
-                    // onClick={() => alert("Añadir al carrito")}
-                  >
-                    Ver producto
-                  </Button>
-                </Link>
-              </div>
-            )}
+                  </TableHeader>
+                  <TableBody>
+                    {data?.productos?.map((item, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{data.nombre_marca}</TableCell>
+                        <TableCell>{data.nombre_modelo}</TableCell>
+                        <TableCell>{data.anio_inicio_termino}</TableCell>
+                        <TableCell>{item.nombre_producto}</TableCell>
+                        <TableCell>{item.descripcion}</TableCell>
+                        <TableCell>{item.origen}</TableCell>
+                        <TableCell>{item.marca_fabricante}</TableCell>
+                        <TableCell>
+                          <Link
+                            to={`/product/${item.id_producto}`}
+                            className="underline text-amarillo"
+                          >
+                            {item.codigo_interno}
+                          </Link>
+                        </TableCell>
+                        <TableCell>{item.precio_venta}</TableCell>
+                        <TableCell>{item.total_stock}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TabsContent>
+              <TabsContent value="imagenes" className="">
+                <div className="justify-start items-start font-prosto-one flex flex-wrap gap-2 md:gap-4 text-azul py-4">
+                  {data?.productos?.map((item) => {
+                    console.log(item.imagenes);
+                    return (
+                      <div
+                        className="w-40 lg:w-52 flex flex-col gap-4 py-4 px-2 rounded-lg shadow-lg border-[2px] border-border-gray hover:border-negro"
+                        key={item?.id_producto}
+                      >
+                        <Link
+                          to={`/product/${item.id_producto}`}
+                          className="flex flex-col items-center gap-2"
+                        >
+                          <p className="text-base text-center leading-none">
+                            {item.nombre_producto}
+                          </p>
+                          <p className="text-sm">{item.marca_fabricante}</p>
+                          <div>
+                            <img
+                              src={
+                                item?.imagenes?.[0] ||
+                                "https://th.bing.com/th/id/OIP.7WQXYKGFHH-XyQ07pfqQXgHaDt?rs=1&pid=ImgDetMain"
+                              }
+                              alt="Imagen de un producto"
+                              className="object-cover rounded-lg h-40"
+                            />
+                          </div>
+                          <p>S/. {item.precio_venta}</p>
+                        </Link>
+                        <Button
+                          className=" bg-azul text-blanco font-prosto-one  border-2 border-azul w-full hover:bg-azul"
+                          // onClick={() => addItemToCart(item)}
+                          onClick={() => {
+                            navigate(`/product/${item.id_producto}`);
+                          }}
+                        >
+                          Ver producto
+                        </Button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </div>

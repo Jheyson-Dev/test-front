@@ -35,7 +35,7 @@ export const Header = () => {
             <Menu color="#093981" size={36} strokeWidth={3} />
           </button>
           {isOpen && (
-            <div className="absolute top-0 left-0 w-full h-full flex flex-col p-4 bg-blanco">
+            <div className="absolute top-0 left-0 w-full h-full flex flex-col p-4 bg-blanco h-screen">
               <div className="flex justify-end">
                 <button onClick={changeNav}>
                   <X color="#093981" size={36} strokeWidth={3} />
@@ -70,6 +70,16 @@ export const Header = () => {
                     }
                   >
                     Modelo
+                  </NavLink>
+                </div>
+                <div className="w-full text-center">
+                  <NavLink
+                    to={"/search-medida"}
+                    className={({ isActive }) =>
+                      isActive ? "underline" : "mb-2"
+                    }
+                  >
+                    Medida
                   </NavLink>
                 </div>
                 {/* <div className="w-full text-center">

@@ -1,0 +1,74 @@
+ <div className="w-[1200px]">
+      <p className="text-2xl font-poppins font-semibold">Lista de Imagenes</p>
+      <div className="flex items-center py-4 justify-between">
+        <div className="flex items-center gap-2">
+          <Input
+            placeholder="INGRESE EL NOMBRE DEL USUARIO"
+            className="placeholder:font-poppins placeholder:text-base border-border-gray focus-visible:ring-0 focus-visible:ring-offset-0 w-96"
+            value={
+              (table.getColumn("username")?.getFilterValue() as string) ?? ""
+            }
+            onChange={(e) => {
+              table.getColumn("username")?.setFilterValue(e.target.value);
+            }}
+          />
+        </div>
+
+        <Button
+          className="bg-azul"
+          onClick={() => navigate("/admin/user/create")}
+        >
+          Agregar
+        </Button>
+      </div>
+      {/* Tabla */}
+      <div>
+        <Table>
+          {/* // Hencabeazdos */}
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          {/* // Cuerpo de la tabla */}
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => {
+                return (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>

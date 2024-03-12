@@ -6,34 +6,54 @@ import producto from "../../../assets/product.png";
 // Shadcn
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Icons
 import { Search } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { HeaderDesktop } from "../components/HeaderDesktop";
 import { TopButton } from "../components/TopButton";
+import { UseProductAll } from "@/features/Admin/hooks/Product/UseProductAll";
+import { InputContext } from "@/features/Worker/contexts/InputHomeContext";
 
 export const Home = () => {
+  const navigate = useNavigate();
+
+  const { inputValue, setInputValue } = useContext(InputContext);
+
   // Estados
+
+  const { data } = UseProductAll();
+
+  const [filter, setFilter] = useState([]);
+
+  const filterData = filter.filter((item) =>
+    Object.values(item).some((val) =>
+      String(val).toLowerCase().includes(inputValue.toLowerCase())
+    )
+  );
 
   const [tabs, setTabs] = useState({
     ofertas: false,
     ingresos: false,
   });
 
-  const handleClick = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") alert("Buscando");
-  };
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    if (data) {
+      setFilter(data);
+    }
+  }, [data]);
 
   return (
     <div className="relative">
       <Header />
       <HeaderDesktop />
-      <div className="container lg:px-16 ">
+      <div className="container lg:px-16">
         <div className="py-10 px-4 flex flex-col gap-4 md:gap-16">
           {/* Logo e Input Search */}
           <div className="flex flex-col gap-10 md:gap-28 items-center">
@@ -47,7 +67,10 @@ export const Home = () => {
                 type="email"
                 placeholder="Buscar..."
                 className="placeholder:font-prosto-one placeholder:text-base border-2 border-r-0 rounded-r-none border-border-gray focus-visible:ring-0 focus-visible:ring-offset-0 max-w-[80%]"
-                onKeyDown={(e) => handleClick(e)}
+                defaultValue={inputValue}
+                onChange={(e) => {
+                  setInputValue(e.target.value);
+                }}
               />
               <Button
                 type="submit"
@@ -63,64 +86,157 @@ export const Home = () => {
             </div>
           </div>
           {/* Lista de Productos y banner */}
-          <div>
-            {/* Banner de Ofertas */}
-            <div></div>
-            {/* Lista de Productos */}
-            <div className="">
-              {/* Botones de cambio de secciones */}
-              <div className="flex justify-between md:justify-start md:gap-2">
-                <Button
-                  className={`${
-                    tabs.ofertas
-                      ? " bg-azul text-blanco font-prosto-one text-base border-2 border-azul hover:bg-azul"
-                      : "bg-blanco text-red-text font-prosto-one text-base border-2 border-azul hover:bg-azul hover:text-blanco"
-                  }`}
-                  onClick={() => setTabs({ ofertas: true, ingresos: false })}
-                >
-                  OFERTAS
-                </Button>
-                <Button
-                  className={`${
-                    tabs.ingresos
-                      ? " bg-azul text-blanco font-prosto-one text-base border-2 border-azul hover:bg-azul"
-                      : "bg-blanco text-red-text font-prosto-one text-base border-2 border-azul hover:bg-azul hover:text-blanco"
-                  }`}
-                  onClick={() => setTabs({ ofertas: false, ingresos: true })}
-                >
-                  INGRESOS
-                </Button>
-              </div>
-              {/* Grilla de productos */}
-              <div className="place-items-center font-prosto-one flex flex-wrap gap-2 md:gap-4 justify-center text-azul py-4">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((index) => (
-                  <Link
-                    to={`/product/${index}`}
-                    key={index}
-                    className={`w-40 lg:w-52 flex flex-col items-center gap-2 py-4 px-2 rounded-lg shadow-lg border-[1px] border-border-gray hover:border-negro  ${
-                      tabs.ofertas ? "bg-red-500" : ""
-                    }
-                  ${tabs.ingresos ? "bg-amarillo" : "bg-blanco"}`}
-                  >
-                    <p className="text-base text-center leading-none">
-                      Nombrecito Producto
-                    </p>
-                    <p className="text-sm">Marca</p>
-                    <div>
-                      <img src={producto} alt="Imagen de un producto" />
+          {inputValue === "" ? (
+            <div>
+              {/* Banner de Ofertas */}
+              <div></div>
+              {/* Lista de Productos */}
+              <div className="">
+                {/* Botones de cambio de secciones */}
+
+                <Tabs defaultValue="mas_buscados" className="">
+                  <TabsList className="grid w-full grid-cols-2 ">
+                    <TabsTrigger value="mas_buscados">
+                      <span className="text-lg">Mas buscados</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="ofertas">
+                      <span className="text-lg">Ofertas</span>
+                    </TabsTrigger>
+                    {/* <TabsTrigger value="ingresos">Ingresos</TabsTrigger> */}
+                  </TabsList>
+                  <TabsContent value="mas_buscados">
+                    <div className="font-prosto-one flex flex-wrap gap-2 md:gap-4 md:justify-start text-azul py-4 justify-center">
+                      {data
+                        ?.filter((item) => item.consultas > 0)
+                        .map((item) => (
+                          <div
+                            className="w-40 lg:w-52 flex flex-col gap-4 py-4 px-2 rounded-lg shadow-lg border-[2px] border-border-gray hover:border-negro"
+                            key={item?.id_producto}
+                          >
+                            <Link
+                              to={`/product/${item.id_producto}`}
+                              className="flex flex-col  items-center gap-2"
+                            >
+                              <p className="text-base text-center leading-none">
+                                {item.nombre_producto}
+                              </p>
+                              <p className="text-sm">{item.marca_fabricante}</p>
+                              <div>
+                                <img
+                                  src={
+                                    item?.imagenes[0]?.img_url
+                                      ? item.imagenes[0]?.img_url
+                                      : "https://th.bing.com/th/id/OIP.7WQXYKGFHH-XyQ07pfqQXgHaDt?rs=1&pid=ImgDetMain"
+                                  }
+                                  alt="Imagen de un producto"
+                                  className="object-cover h-40"
+                                />
+                              </div>
+                              <p>S/. {item.precio_venta}</p>
+                              <Button
+                                className=" bg-azul text-blanco font-prosto-one mt-2  border-2 border-azul w-full hover:bg-azul"
+                                // onClick={() => addItemToCart(item)}
+                              >
+                                Ver producto
+                              </Button>
+                            </Link>
+                          </div>
+                        ))}
                     </div>
-                    <p>S/. 100.00</p>
-                    <Button
-                      className="bg-azul text-blanco font-prosto-one  border-2 border-azul w-full hover:bg-azul"
-                      onClick={() => alert("Añadir al carrito")}
-                    >
-                      Ver producto
-                    </Button>
-                  </Link>
-                ))}
+                  </TabsContent>
+                  <TabsContent value="ofertas">
+                    <div className="font-prosto-one flex flex-wrap gap-2 md:gap-4 justify-start text-azul py-4">
+                      {data
+                        ?.filter((item) => item.ofertas.length > 0)
+                        .map((item) => (
+                          <div
+                            className="w-40 lg:w-52 flex flex-col gap-4 py-4 px-2 rounded-lg shadow-lg border-[2px] border-border-gray hover:border-negro"
+                            key={item?.id_producto}
+                          >
+                            <Link
+                              to={`/product/${item.id_producto}`}
+                              className="flex flex-col items-center gap-2"
+                            >
+                              <p className="text-base text-center leading-none">
+                                {item.nombre_producto}
+                              </p>
+                              <p className="text-sm">{item.marca_fabricante}</p>
+                              <div>
+                                <img
+                                  src={
+                                    item?.imagenes[0]?.img_url
+                                      ? item.imagenes[0]?.img_url
+                                      : "https://th.bing.com/th/id/OIP.7WQXYKGFHH-XyQ07pfqQXgHaDt?rs=1&pid=ImgDetMain"
+                                  }
+                                  alt="Imagen de un producto"
+                                  className="object-cover rounded-lg h-40"
+                                />
+                              </div>
+                              <p>S/. {item.precio_venta}</p>
+                              <Button
+                                className="mt-2 bg-azul text-blanco font-prosto-one  border-2 border-azul w-full hover:bg-azul"
+                                // onClick={() => addItemToCart(item)}
+                              >
+                                Ver producto
+                              </Button>
+                            </Link>
+                          </div>
+                        ))}
+                    </div>
+                  </TabsContent>
+                  <TabsContent value="ingresos">
+                    <div>Ingresos</div>
+                  </TabsContent>
+                </Tabs>
+                {/* Grilla de productos */}
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="">
+              {filterData?.length > 0 ? (
+                <div className="font-prosto-one flex flex-wrap gap-8 md:gap-4 justify-start text-azul py-4">
+                  {filterData.map((item) => (
+                    <div
+                      className="w-40 lg:w-52 flex flex-col gap-4 py-4 px-2 rounded-lg shadow-lg border-[2px] border-border-gray hover:border-negro"
+                      key={item?.id_producto}
+                    >
+                      <Link
+                        to={`/product/${item.id_producto}`}
+                        className="flex flex-col gap-2 items-center"
+                      >
+                        <p className="text-base text-center leading-none">
+                          {item.nombre_producto}
+                        </p>
+                        <p className="text-sm">{item.marca_fabricante}</p>
+                        <div>
+                          <img
+                            src={
+                              item?.imagenes[0]?.img_url
+                                ? item?.imagenes[0]?.img_url
+                                : "https://th.bing.com/th/id/OIP.7WQXYKGFHH-XyQ07pfqQXgHaDt?rs=1&pid=ImgDetMain"
+                            }
+                            alt="Imagen de un producto"
+                            className="object-cover rounded-lg h-40"
+                          />
+                        </div>
+                        <p>S/. {item.precio_venta}</p>
+                        <Button
+                          className=" bg-azul text-blanco font-prosto-one  border-2 border-azul w-full hover:bg-azul"
+                          // onClick={() => addItemToCart(item)}
+                        >
+                          Ver producto
+                        </Button>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <span className=" flex justify-center w-full">
+                  No se encontraron coincidencias con su busqueda
+                </span>
+              )}
+            </div>
+          )}
         </div>
         <TopButton />
       </div>
