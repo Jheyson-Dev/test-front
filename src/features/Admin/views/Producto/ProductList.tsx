@@ -58,6 +58,7 @@ export interface Product {
 
 export const ProductList = () => {
   const { data, refetch } = UseProductAll();
+  console.log(data);
   const navigate = useNavigate();
 
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -117,10 +118,35 @@ export const ProductList = () => {
       accessorKey: "precio_venta",
       header: "Precio",
     },
-    {
-      accessorKey: "total_stock",
-      header: "Stock",
-    },
+    // {
+    //   accessorKey: "total_stock",
+    //   header: "Stock",
+    //   cell: ({ row }) => {
+    //     const options = row.original;
+    //     return (
+    //       <div className="flex justify-center h-10 overflow-hidden overflow-ellipsis">
+    //         <p className="text-sm">
+    //           {options.total_stock.data.length > 0
+    //             ? options.total_stock.data[0].stock
+    //             : 0}
+    //         </p>
+    //       </div>
+    //     );
+    //   },
+    // },
+    // {
+    //   accessorKey: "total_stock",
+    //   header: "Stock",
+    //   cell: ({ row }) => {
+    //     const options = row.original;
+    //     const totalStock = Number(options.total_stock.toString("utf8"));
+    //     return (
+    //       <div className="flex justify-center h-10 overflow-hidden overflow-ellipsis">
+    //         <p className="text-sm">{isNaN(totalStock) ? 0 : totalStock}</p>
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       id: "actions",
       header: "Opciones",

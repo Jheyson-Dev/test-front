@@ -260,6 +260,19 @@ export const EditProduct = () => {
                   />
                 </Label>
               </div>
+              <p className="text-xl font-poppins font-semibold">
+                Ubicaciones y Stock
+              </p>
+              <div className="w-full grid grid-cols-3 gap-8">
+                {data?.tiendas.map((tienda, index) => {
+                  return (
+                    <Label>
+                      {tienda?.razon_social}:
+                      <Input disabled defaultValue={tienda?.stock} />
+                    </Label>
+                  );
+                })}
+              </div>
               <div className=" flex justify-end gap-8 w-full">
                 <Button variant={"default"} type="submit">
                   Guardar

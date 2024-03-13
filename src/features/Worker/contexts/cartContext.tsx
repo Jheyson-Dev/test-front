@@ -74,6 +74,16 @@ export const CartProvider = ({ children }) => {
     }, 0);
   };
 
+  const getTotalStock = () => {
+    return cartItems.reduce((sum, item) => {
+      const totalStock = item.tiendas.reduce(
+        (stockSum, tienda) => stockSum + Number(tienda.stock),
+        0
+      );
+      return sum + (isNaN(totalStock) ? 0 : totalStock);
+    }, 0);
+  };
+
   // Get the stock of an item
   const getStock = (itemId) => {
     const item = cartItems.find((item) => item.id_producto === itemId);
@@ -158,6 +168,7 @@ export const CartProvider = ({ children }) => {
     getStock,
     updateProductStock,
     reducir,
+    getTotalStock,
   };
 
   return (

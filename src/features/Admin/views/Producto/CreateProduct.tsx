@@ -65,7 +65,9 @@ export const CreateProduct = () => {
   const onSubmit = (data) => {
     // console.log(data);
     const copy = { ...data };
-    copy.pc = parseFloat(data.precio_compra);
+    // copy.pc = parseFloat(data.precio_compra);
+    delete copy.pc;
+    console.log(copy);
     createMutation.mutate(copy);
   };
 

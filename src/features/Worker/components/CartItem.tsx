@@ -27,6 +27,7 @@ export const CartItem: React.FC<CartItemProps> = ({ item, index }) => {
     removeItemFromCart,
     reduceQuantityFromItem,
     reducir,
+    getTotalStock,
   } = useCart();
   const [productId, setProductId] = useState(item.id_producto);
   const [storeId, setStoreId] = useState(null);
@@ -109,7 +110,7 @@ export const CartItem: React.FC<CartItemProps> = ({ item, index }) => {
 
         <div className="flex flex-col items-center">
           <span className="font-semibold text-xs">Stock Total</span>
-          <span className="font-semibold">{item?.total_stock}</span>
+          <span className="font-semibold">{getTotalStock()}</span>
         </div>
 
         <div className="flex gap-2 col-span-2">

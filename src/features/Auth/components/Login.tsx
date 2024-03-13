@@ -10,8 +10,8 @@ interface formData {
 }
 export const Login = () => {
   // Estados para el manejo de los datos del formulario
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("adminDM");
+  const [password, setPassword] = useState("dm1234");
 
   // Navegar entre rutas
   const navigate = useNavigate();
