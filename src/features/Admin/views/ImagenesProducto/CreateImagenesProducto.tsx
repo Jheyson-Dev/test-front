@@ -114,7 +114,7 @@ export const CreateImagenesProducto = () => {
                   <div className="flex justify-center items-center w-full h-64 rounded-xl">
                     <img
                       src={previewImage}
-                      className="aspect-video object-contain border-2 border-admin-gray/10 rounded-xl"
+                      className="aspect-video object-contain border-2 border-admin-gray/10 rounded-xl w-full"
                     />
                   </div>
                 ) : (

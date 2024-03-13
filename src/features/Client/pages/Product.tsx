@@ -84,7 +84,7 @@ export const Product = () => {
                     <img
                       src={mainImage}
                       alt="Imagen de un Producto"
-                      className="border-2 border-azul rounded-lg h-80 w-full object-cover"
+                      className="border-2 border-azul rounded-lg h-80 w-full object-contain"
                     />
                   </div>
                 </DialogTrigger>
@@ -108,7 +108,7 @@ export const Product = () => {
                           <img
                             src={image.img_url}
                             alt="Imagen de un producto"
-                            className="object-cover w-full h-full"
+                            className="object-contain w-full h-full"
                           />
                         </div>
                       );
@@ -127,7 +127,7 @@ export const Product = () => {
                       <img
                         src={image?.img_url}
                         alt="Imagen de un producto"
-                        className="object-cover w-full h-full"
+                        className="object-contain w-full h-full"
                       />
                     </div>
                   );
@@ -142,7 +142,7 @@ export const Product = () => {
                     <img
                       src={mainImage}
                       alt="Imagen de un Producto"
-                      className="border-2 border-azul rounded-lg h-80 w-full object-cover"
+                      className="border-2 border-azul rounded-lg h-80 w-full object-contain"
                     />
                   </div>
                 </DialogTrigger>
@@ -151,7 +151,7 @@ export const Product = () => {
                     <img
                       src={mainImage}
                       alt=""
-                      className="h-[500px] rounded-xl "
+                      className="h-[500px] rounded-xl object-contain"
                     />
                   </div>
 
@@ -166,7 +166,7 @@ export const Product = () => {
                           <img
                             src={image.img_url}
                             alt="Imagen de un producto"
-                            className="object-cover w-full h-full"
+                            className="object-contain w-full h-full"
                           />
                         </div>
                       );
@@ -185,7 +185,7 @@ export const Product = () => {
                       <img
                         src={image?.img_url}
                         alt="Imagen de un producto"
-                        className="object-cover w-full h-full"
+                        className="object-contain w-full h-full"
                       />
                     </div>
                   );
